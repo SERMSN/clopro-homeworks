@@ -1,0 +1,8 @@
+#cloud-config
+users:
+  - name: wrcs
+    groups: sudo
+    shell: /bin/bash
+    sudo: ["ALL=(ALL) NOPASSWD:ALL"]
+    ssh_authorized_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAcIXwxrFP8YAs4eS168yrBm2IxJ77hJlLPatGk4mtUM msn@fedora

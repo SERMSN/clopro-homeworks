@@ -1,19 +1,19 @@
 variable "yc_token" {
   description = "Yandex Cloud OAuth token"
   type        = string
-  default = "y0__xDR2fYlGMHdEyDX48zUEvpPpOAMxHFOIlqJBiQo2ojarq9c"
+  default = "y0__"
 }
 
 variable "yc_cloud_id" {
   description = "Yandex Cloud ID"
   type        = string
-  default     = "b1g4u08kmhkhn7n929cv"
+  default     = ""
 }
 
 variable "yc_folder_id" {
   description = "Yandex Cloud Folder ID"
   type        = string
-  default     = "b1gsjli4q63fcdrigti2"
+  default     = ""
 }
 
 variable "yc_image_id" {

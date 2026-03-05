@@ -1,0 +1,21 @@
+# Исключить все скрытые файлы и папки
+.*
+# Но разрешить .gitignore самому себе
+!.gitignore
+
+# Исключить файлы состояния Terraform
+terraform.tfstate
+terraform.tfstate.backup
+*.tfstate
+*.tfstate.*
+
+# Исключить логи и временные файлы
+*.log
+*.tmp
+*.temp
+
+# Исключить зависимости и сборки
+node_modules/
+dist/
+build/
+out/

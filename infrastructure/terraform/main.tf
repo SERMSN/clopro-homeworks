@@ -238,16 +238,43 @@ resource "yandex_iam_service_account_static_access_key" "lb_sa_key" {
   description        = "Static access key for Object Storage"
 }
 
+resource "yandex_kms_symmetric_key" "bucket_key" {
+  name              = "task3-bucket-kms-key"
+  description       = "KMS key for Object Storage bucket encryption (Task 3)"
+  default_algorithm = "AES_256"
+  rotation_period   = "8760h"
+}
+
+resource "yandex_kms_symmetric_key_iam_binding" "bucket_key_encrypter_decrypter" {
+  symmetric_key_id = yandex_kms_symmetric_key.bucket_key.id
+  role             = "kms.keys.encrypterDecrypter"
+  members = [
+    "serviceAccount:${yandex_iam_service_account.lb_sa.id}",
+  ]
+}
+
 resource "yandex_storage_bucket" "images" {
   access_key = yandex_iam_service_account_static_access_key.lb_sa_key.access_key
   secret_key = yandex_iam_service_account_static_access_key.lb_sa_key.secret_key
   bucket     = var.bucket_name
 
+  server_side_encryption_configuration {
+    rule {
+      apply_server_side_encryption_by_default {
+        kms_master_key_id = yandex_kms_symmetric_key.bucket_key.id
+        sse_algorithm     = "aws:kms"
+      }
+    }
+  }
+
   anonymous_access_flags {
     read = true
   }
 
-  depends_on = [yandex_resourcemanager_folder_iam_member.lb_sa_storage_admin]
+  depends_on = [
+    yandex_resourcemanager_folder_iam_member.lb_sa_storage_admin,
+    yandex_kms_symmetric_key_iam_binding.bucket_key_encrypter_decrypter,
+  ]
 }
 
 resource "yandex_storage_object" "image" {

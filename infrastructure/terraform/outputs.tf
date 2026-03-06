@@ -22,6 +22,14 @@ output "task2_bucket_name" {
   value = yandex_storage_bucket.images.bucket
 }
 
+output "task3_kms_key_id" {
+  value = yandex_kms_symmetric_key.bucket_key.id
+}
+
+output "task3_kms_key_name" {
+  value = yandex_kms_symmetric_key.bucket_key.name
+}
+
 output "task2_bucket_image_url" {
   value = local.bucket_image_url
 }

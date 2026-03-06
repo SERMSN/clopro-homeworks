@@ -143,3 +143,54 @@
 7. Проверка поведения после удаления инстанса (шаг 7).
 
 ![task2 fault tolerance 7](images/Task2-Проверка%20отказоустойчивости-7.png)
+
+## ДЗ 3. Безопасность в облачных провайдерах
+
+### Манифесты Terraform
+
+- [main.tf](infrastructure/terraform/main.tf)
+- [variables.tf](infrastructure/terraform/variables.tf)
+- [outputs.tf](infrastructure/terraform/outputs.tf)
+- [providers.tf](infrastructure/terraform/providers.tf)
+
+### Пункт 1. Шифрование бакета с помощью KMS (Terraform)
+
+1. Выполнено применение Terraform с ресурсами KMS и обновлением бакета.
+
+![task3 terraform apply](images/Task3-Подтверждение%20применения%20Terraform.png)
+
+2. Создан ключ KMS `task3-bucket-kms-key` для шифрования бакета.
+
+![task3 kms key](images/Task3-Созданный%20KMS-ключ.png)
+
+3. Настроены права service account на использование ключа (`kms.keys.encrypterDecrypter`).
+
+![task3 kms sa role](images/Task3-Права%20на%20ключ%20для%20service%20account.png)
+
+4. Для бакета включено серверное шифрование через KMS-ключ.
+
+![task3 bucket encryption](images/Task3-Шифрование%20включено%20на%20бакете.png)
+
+### Пункт 2. Ручная часть в Yandex Cloud: статический сайт + HTTPS
+
+Примечание: верификация сертификата может занимать длительное время из-за обновления DNS-записей. В отчете зафиксированы выполненные шаги и состояние процесса до финального `Issued`.
+
+1. Создан отдельный бакет для статического сайта.
+
+![task3 website bucket created](images/Task3-Бакет.png)
+
+2. Загружены файлы сайта в Object Storage.
+
+![task3 website objects](images/Task3-бакет%20объекты.png)
+
+3. Включен режим Website hosting.
+
+![task3 website settings](images/Task3-бакет-нвстройки-вебсайт.png)
+
+4. Запущен выпуск сертификата в Certificate Manager.
+
+![task3 cert issuance](images/Task3-%20Выпуск%20сертификата.png)
+
+5. В DNS у регистратора добавлены записи для сайта и проверки сертификата (`_acme-challenge`).
+6. После статуса `Issued` сертификат будет привязан к бакету в разделе `HTTPS`.
+7. После привязки сертификата будет выполнена проверка сайта по `https://` (замок в браузере).

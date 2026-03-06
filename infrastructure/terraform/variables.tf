@@ -1,7 +1,7 @@
 variable "yc_token" {
   description = "Yandex Cloud OAuth token"
   type        = string
-  default = "y0__"
+  default     = "y0__"
 }
 
 variable "yc_cloud_id" {
